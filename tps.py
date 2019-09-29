@@ -2,12 +2,6 @@ from typing import Dict
 
 import json
 import requests
-import argparse
-
-parser = argparse.ArgumentParser()
-parser.add_argument("url", type=str, help="url of the node. e.g. ,.algod.net")
-parser.add_argument("token", type=str, help="API token.  e.g. ./algod.token")
-parser.add_argument("-v", "--silence", action="count", default=0)
 
 def get_block(n: int, node_info: Dict[str, str]):
     if not args.silence:
@@ -38,10 +32,10 @@ def get_lastround(node_info: Dict[str, str]):
     j = r.json()
     return j['lastRound']
 
-def tps():
-    node_info = {"url": args.url, "token": args.token}
+def tps(max_round, url, token):
+    node_info = {"url": url, "token": token}
     last_round = get_lastround(node_info)
-    first_round = last_round - 999 if last_round >=1000 else 0
+    first_round = last_round + 1 - max_round if last_round >= max_round else 1
     data = []
     for i in range(first_round, last_round + 1):
         (nt, success, time) = get_block(i, node_info) 
@@ -57,6 +51,3 @@ def tps():
         total_txn/num_round))
     print("avg. time per block: {}".format(total_time/(num_round -1)))
     print("txn per second: {}".format(total_txn/total_time))
-
-args = parser.parse_args()
-tps()
