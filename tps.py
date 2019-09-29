@@ -3,8 +3,8 @@ from typing import Dict
 import json
 import requests
 
-def get_block(n: int, node_info: Dict[str, str]):
-    if not args.silence:
+def get_block(n: int, node_info: Dict[str, str], verbose):
+    if verbose == 1:
         print("getting block {}.".format(n))
     url = 'http://{}/v1/block/{}'.format(node_info["url"], n)
     headers = {"X-Algo-API-Token": node_info["token"]}
@@ -32,13 +32,13 @@ def get_lastround(node_info: Dict[str, str]):
     j = r.json()
     return j['lastRound']
 
-def tps(max_round, url, token):
+def tps(max_round, url, token, silence):
     node_info = {"url": url, "token": token}
     last_round = get_lastround(node_info)
     first_round = last_round + 1 - max_round if last_round >= max_round else 1
     data = []
     for i in range(first_round, last_round + 1):
-        (nt, success, time) = get_block(i, node_info) 
+        (nt, success, time) = get_block(i, node_info, silence) 
         if not success:
             print("ERROR in round {}".format(i))
         data.append((nt, time))
