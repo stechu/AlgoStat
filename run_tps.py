@@ -8,6 +8,7 @@ parser.add_argument("-d", "--dir", type=str, help="directory of a node")
 parser.add_argument("-v", "--verbose", action="count", default=0)
 parser.add_argument("-n", "--number", type=int, help="number of rounds", default=100)
 parser.add_argument("-p", "--period", type=int, help="time between each report (sec)", default=600)
+parser.add_argument("-r", "--repeat", type=int, help="number of repeat.", default=1)
 
 def main():
     args = parser.parse_args()
@@ -20,10 +21,11 @@ def main():
     with open(token_file) as f:
         token = f.readline()
 
-    for i in range(1000): # essentially forever
-        time.sleep(args.period)
+    for _ in range(args.repeat):
+        if args.repeat != 1:
+            time.sleep(args.period)
         tps.tps(args.number, url, token, args.verbose)
-        print("--------------------------------")
+        print("----------------------------------")
     
     return
 
