@@ -4,7 +4,7 @@ import argparse
 from pathlib import Path
 
 parser = argparse.ArgumentParser()
-parser.add_argument("-d", "--dir", type=str, help="directory of a node")
+parser.add_argument("-d", "--dir", type=str, help="directory of a node", required=True)
 parser.add_argument("-n", "--number", type=int, help="number of rounds", default=100)
 
 
