@@ -12,6 +12,8 @@ parser.add_argument("-r", "--repeat", type=int, help="number of repeat.", defaul
 
 def main():
     args = parser.parse_args()
+    if args.number < 2:
+        print("number of rounds must be greater than 1.")
     data_folder = Path(args.dir)
     net_file = data_folder / "algod.net"
     token_file = data_folder / "algod.token"
