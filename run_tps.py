@@ -23,6 +23,8 @@ def main():
     with open(token_file) as f:
         token = f.readline()
 
+    url = url.rstrip()
+    token = token.rstrip()
     for _ in range(args.repeat):
         if args.repeat != 1:
             time.sleep(args.period)
